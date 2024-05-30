@@ -19,7 +19,7 @@ package util
 // VolumeID string representation.
 type VolumeID string
 
-const (
+var (
 	// RadosNamespace to store CSI specific objects and keys.
 	RadosNamespace = "csi"
 )
