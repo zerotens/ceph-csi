@@ -17,6 +17,8 @@ limitations under the License.
 package driver
 
 import (
+	"github.com/ceph/ceph-csi/internal/cephfs"
+	fsutil "github.com/ceph/ceph-csi/internal/cephfs/util"
 	csicommon "github.com/ceph/ceph-csi/internal/csi-common"
 	"github.com/ceph/ceph-csi/internal/nfs/controller"
 	"github.com/ceph/ceph-csi/internal/nfs/identity"
@@ -42,6 +44,16 @@ func (fs *Driver) Run(conf *util.Config) {
 	cd := csicommon.NewCSIDriver(conf.DriverName, util.DriverVersion, conf.NodeID)
 	if cd == nil {
 		log.FatalLogMsg("failed to initialize CSI driver")
+	}
+
+	// Use passed in instance ID, if provided for omap suffix naming
+	if conf.InstanceID != "" {
+		cephfs.CSIInstanceID = conf.InstanceID
+	}
+
+	// Use passed in radosNamespace, if provided for storing CSI specific objects and keys.
+	if conf.RadosNamespaceCephFS != "" {
+		fsutil.RadosNamespace = conf.RadosNamespaceCephFS
 	}
 
 	if conf.IsControllerServer || !conf.IsNodeServer {
