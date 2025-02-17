@@ -171,13 +171,12 @@ func (kms secretsMetadataKMS) Destroy() {
 // FetchDEK returns passphrase from Kubernetes secrets.
 func (kms secretsMetadataKMS) FetchDEK(ctx context.Context, key string) (string, error) {
 	var (
-		smKMS                secretsMetadataKMS
 		encryptionPassphrase string
 		ok                   bool
 		err                  error
 	)
 
-	encryptionPassphrase, err = smKMS.fetchEncryptionPassphrase(
+	encryptionPassphrase, err = kms.fetchEncryptionPassphrase(
 		kms.Config, kms.Tenant)
 	if err != nil {
 		if !errors.Is(err, errConfigOptionMissing) {
